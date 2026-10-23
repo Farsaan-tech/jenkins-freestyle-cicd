@@ -1,0 +1,12 @@
+---
+- name: Verify connectivity and operating-system details
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Report host and operating system
+      ansible.builtin.debug:
+        msg: "Connected to {{ inventory_hostname }} running {{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+    - name: Check disk space on root filesystem
+      ansible.builtin.command: df -h /
+      changed_when: false

@@ -1,0 +1,28 @@
+name: Validate repository
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - name: Terraform format check
+        run: terraform -chdir=terraform fmt -check -recursive
+      - name: Terraform init (no backend)
+        run: terraform -chdir=terraform init -backend=false
+      - name: Terraform validate
+        run: terraform -chdir=terraform validate
+  ansible-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install ansible-core
+      - run: ansible-playbook -i ansible/inventory.example.ini ansible/preflight.yml --syntax-check

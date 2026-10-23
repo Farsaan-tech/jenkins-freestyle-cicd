@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform/terraform.tfvars.example
+crash.log
+# Secrets and local files
+.env
+*.pem
+*.key
+credentials*
+secrets/
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
